@@ -3,8 +3,14 @@
 *Alpha test version*
 
 ## Summary
-Referring to the paper<sup> [[1]](https://www.nature.com/articles/s41586-023-05896-x)[[2]](https://www.nature.com/articles/s41586-023-06173-7)</sup>  and existing protocol<sup>[[3]](https://github.com/vgteam/vg_wdl)</sup>, we have built a pipeline based on *snakemake* to call/genotype snvs/indels/SVs from multi-sample NGS data in HPC.
+Referring to the paper<sup> [[1]](https://www.nature.com/articles/s41586-023-05896-x)[[2]](https://www.nature.com/articles/s41586-023-06173-7)</sup>  and existing protocol<sup>[[3]](https://github.com/vgteam/vg_wdl)</sup>, we have built a pipeline based on *snakemake* to call/genotype snvs/indels/SVs from multi-sample NGS data in HPC.  
 
+For alpha test, we have uesed multiple methods for results comparision:
+- (1). *VG giraffe* + *DeepVariants* to call SNPs and indels;
+- (2). *VG giraffe* + *VG call* to call SNPs and indels;
+- (3). *PanGenie* to genotype the whole variants set.  
+  
+Please give credit to the relevant paper if the pipeline was applied to your work.
 ## Installation
 conda >= 22.9.0 is requeired
 ```
@@ -88,7 +94,9 @@ merged.graph.pangenie.vcf.gz
 # merged vgcall vcf.gz for all samples
 merged.graph.vgcall.vcf.gz
 ```
-**Note: the reference in toydata is a partial graph at HLA loci, but it does not mean that the variation sets obtained by running this pipeline on a local graph are correct and accurate**.
+To interpret the results, please documents of [VG](https://github.com/vgteam/vg/wiki), [DeepVariant](https://github.com/google/deepvariant/blob/r1.5/docs/README.md) and [PanGenie](https://github.com/eblerjana/pangenie).  
+
+**Note: the reference in toydata is a partial graph at HLA loci, but the accuracy and presision of results from pipeline have not been assessed yet**.
 
 ## Run on real data
 ### Pangenome graph:
