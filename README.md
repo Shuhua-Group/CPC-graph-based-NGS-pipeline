@@ -19,11 +19,12 @@ conda env create -f environment.yaml
 We can run the pipeline on the toydata for bug test.
 ```
 cd CPC-graph-based-NGS-pipeline
+conda activate Pan_NGS
 ```
 
 ### (1). Modify the configfiles
 At the root directory of the pipeline, here is `config.yaml` and `toydata/test.filelist`
-Replace `{download_dir}` to the absolute directory where the pipeline was downloaded:
+Replace `{download_dir}` to the absolute directory where the pipeline was downloaded:  
 `config.yaml`:
 ```
 ## filelist
