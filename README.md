@@ -94,7 +94,7 @@ merged.graph.pangenie.vcf.gz
 # merged vgcall vcf.gz for all samples
 merged.graph.vgcall.vcf.gz
 ```
-To interpret the results, please documents of [VG](https://github.com/vgteam/vg/wiki), [DeepVariant](https://github.com/google/deepvariant/blob/r1.5/docs/README.md) and [PanGenie](https://github.com/eblerjana/pangenie).  
+To interpret the results, please read documents of [VG](https://github.com/vgteam/vg/wiki), [DeepVariant](https://github.com/google/deepvariant/blob/r1.5/docs/README.md) and [PanGenie](https://github.com/eblerjana/pangenie).  
 
 **Note: the reference in toydata is a partial graph at HLA loci, but the accuracy and presision of results from pipeline have not been assessed yet**.
 
