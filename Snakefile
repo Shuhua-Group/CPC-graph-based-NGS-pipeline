@@ -62,6 +62,8 @@ rule get_chromosomes_size:
         ref
     output:
         chr_size = wd + "/temp/chromosomes_size.txt"
+    threads: 1
+    resources: mem_mb=1024*1
     shell:
         """
         awk '/^>/{{if (name) print name "\\t" len; name=$0; len=0; next}} {{len+=length($0)}} END{{if (name) print name "\\t" len}}' {input} | sed "s/^>//g" > {output.chr_size}
@@ -76,7 +78,7 @@ rule Graph_Mapping:
         gam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.gam",
     log: wd + "/logs/01.graph_mapping.{sample}."+ref_name+".log"
     threads: threads
-    resources: mem_gb=50
+    resources: mem_mb=1024*50
     run:
         # vg giraffe
         cmd_template = "(vg giraffe -d {dist_file} -m {min_file} -x {xg_file} -g {gg_file} -H {gbwt_file} -f "
@@ -99,6 +101,7 @@ rule Surject_to_bam:
         bam_sort_bai = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.sorted.bam.bai",
     log: wd + "/logs/02.surject_to_bam.{sample}."+ref_name+".log"
     threads: threads
+    resources: mem_mb=1024*10
     shell:
         """
         # (vg surject --prune-low-cplx {input.gam} > {output.bam}) >{log} 2>&1
@@ -121,7 +124,7 @@ rule Bam_preprocess:
         ex_bed = wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.IndelRealigner.ex.bed"
     log: wd + "/logs/03.bam_processing.{sample}.{chr}."+ref_name+".preprocess.log"
     threads: 4
-    resources: mem_gb=2
+    resources: mem_mb=1024*5
     params:
         chr = lambda wildcards: wildcards.chr
     shell:
@@ -149,7 +152,7 @@ rule Realignment:
         bam_realign = wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.giraffe.sorted.lefted.realigned.bam",
     log: wd + "/logs/03.bam_processing.{sample}.{chr}."+ref_name+".realignment.log"
     threads: threads    
-    resources: mem_gb=10
+    resources: mem_mb=1024*10
     params:
         chr = lambda wildcards: wildcards.chr
     shell:
@@ -168,6 +171,7 @@ rule Bam_Merge:
     output:
         bam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.sorted.lefted.realigned.bam"
     threads: threads
+    resources: mem_mb=1024*50
     run:
         bam_now = ["{wd}/temp/{wildcards.sample}/{wildcards.sample}.{ref_name}.chr_split/"+chrom+".giraffe.sorted.lefted.realigned.bam" for chrom in CHROMOSOMES]
         cmd = "samtools merge -@ {threads} {output.bam} " + ' '.join(bam_now) + ' && samtools index -@ {threads} {output.bam}'
@@ -183,6 +187,7 @@ rule Deepvariant:
         gvcf = wd + "/result/{sample}/{sample}."+ref_name+".giraffe.deepvariant.g.vcf.gz",
     log: wd + "/logs/04.deepvariant.{sample}."+ref_name+".log"
     threads: threads
+    resources: mem_mb=1024*50
     shell:
         "(/usr/bin/time -v {run_deepvariant} --model_type WGS --ref {ref} --reads {input.bam} --output_vcf={output.vcf} --output_gvcf={output.gvcf} --num_shards={threads} ) >{log} 2>&1"
 
@@ -195,6 +200,7 @@ rule vg_call:
         vcf = wd + "/result/{sample}/{sample}."+ref_name+".vgcall.vcf.gz",
     log: wd + "/logs/05.vgcall.{sample}."+ref_name+".log"
     threads: threads
+    resources: mem_mb=1024*50
     shell:
         """
         (/usr/bin/time -v vg pack -t {threads} -x {xg_file} -g {input.gam} -Q 5 -s 5 -o {wd}/temp/{wildcards.sample}.{ref_name}.pack) >{log} 2>&1
@@ -215,6 +221,7 @@ rule Vcf_filtering:
         indel = wd + "/result/{sample}/{sample}."+ref_name+".graph.deepvariant.pass.indel.vcf",
     log: wd + "/logs/06.vcf_filtering.{sample}."+ref_name+".log"
     threads: threads
+    resources: mem_mb=1024*20
     shell:
         """
         zcat {input.vcf_d} | grep -E '#|PASS' > {wd}/temp/{wildcards.sample}.graph.deepvariant.pass.vcf
@@ -237,7 +244,7 @@ rule run_Pangenie:
         pangenie_fasta = wd + "/result/{sample}/pangenie_{sample}."+ref_name+"/{sample}_path_segments.fasta",
     log: wd + "/logs/07.panGenie.{sample}."+ref_name+".log"
     threads: threads
-    resources: mem_gb=120
+    resources: mem_mb=1024*120
     shell:
         """
         zcat {input.fq} > {output.reads_combined}
@@ -258,11 +265,13 @@ rule Vcf_Compress:
         snv_vcf = wd + "/result/{sample}/{sample}."+ref_name+".graph.deepvariant.pass.snp.vcf.gz",
         indel_vcf = wd + "/result/{sample}/{sample}."+ref_name+".graph.deepvariant.pass.indel.vcf.gz",
         pangenie_vcf = wd + "/result/{sample}/pangenie_{sample}."+ref_name+"/{sample}_genotyping.vcf.gz"
+    threads: threads
+    resources: mem_mb=1024*50
     shell:
         """
-        bgzip {input.snv_vcf} && tabix {output.snv_vcf}
-        bgzip {input.indel_vcf} && tabix {output.indel_vcf}
-        bgzip {input.pangenie_vcf} && tabix {output.pangenie_vcf}
+        bgzip -@ {threads} {input.snv_vcf} && tabix {output.snv_vcf}
+        bgzip -@ {threads} {input.indel_vcf} && tabix {output.indel_vcf}
+        bgzip -@ {threads} {input.pangenie_vcf} && tabix {output.pangenie_vcf}
         """        
 
 rule checkends:
@@ -279,6 +288,8 @@ rule checkends:
         wd + "/result/{sample}/pangenie_{sample}."+ref_name+"/{sample}_genotyping.vcf.gz"
     output:
         wd + "/logs/{sample}.checkpoints.end"
+    threads: 1
+    resources: mem_mb=100
     shell:
         ## check the results
         "touch {output}"
@@ -295,13 +306,15 @@ rule merge_results:
         final_indel_vcf = wd + "/result/merged.graph.deepvariant.pass.indel.vcf.gz",
         final_pangenie_vcf = wd + "/result/merged.graph.pangenie.vcf.gz",
         final_vgcall_vcf = wd + "/result/merged.graph.vgcall.vcf.gz",
+    threads: threads
+    resources: mem_mb=1024*50    
     shell:
         """
-        ## check the results
-        bcftools merge {input.snv_vcfs} | bgzip > {output.final_snp_vcf} && tabix {output.final_snp_vcf}
-        bcftools merge {input.indel_vcfs} | bgzip > {output.final_indel_vcf} && tabix {output.final_indel_vcf}
-        bcftools merge {input.pangenie_vcfs} | bgzip > {output.final_pangenie_vcf} && tabix {output.final_pangenie_vcf}
-        bcftools merge {input.vgcall_vcfs} | bgzip > {output.final_vgcall_vcf} && tabix {output.final_vgcall_vcf}
+        ## merge the results
+        bcftools merge --threads {threads} {input.snv_vcfs} | bgzip > {output.final_snp_vcf} && tabix {output.final_snp_vcf}
+        bcftools merge --threads {threads} {input.indel_vcfs} | bgzip > {output.final_indel_vcf} && tabix {output.final_indel_vcf}
+        bcftools merge --threads {threads} {input.pangenie_vcfs} | bgzip > {output.final_pangenie_vcf} && tabix {output.final_pangenie_vcf}
+        bcftools merge --threads {threads} {input.vgcall_vcfs} | bgzip > {output.final_vgcall_vcf} && tabix {output.final_vgcall_vcf}
         """
 
 
