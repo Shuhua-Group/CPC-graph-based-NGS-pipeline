@@ -62,7 +62,16 @@ Run the pipeline locally, at least 100 GB of memory is required:
 ```
 snakemake -s ./Snakefile --configfile ./config.yaml -c 16
 ```
-You can also run the pipeline in PBS or SLURM system, see details at [snakemake doc](https://snakemake.readthedocs.io/en/stable/executing/cluster.html).
+You can also run the pipeline in PBS or SLURM system.
+For example:
+```
+# Using 128 cores totally and retrying 3 time if failed
+snakemake --cluster "sbatch -N 1 --ntasks=1 \
+    --cpus-per-task={threads} --mem={resources.mem_mb} \
+    --job-name={rule} --output={rule}.%j.out --error={rule}.%j.err" \
+    --jobs 128 --retries 3
+```
+See more details at [snakemake doc](https://snakemake.readthedocs.io/en/stable/executing/cluster.html).
 
 ### (3). Results
 If the pipeline runs correctly, the results file will be written to `{download_dir}/toydata/out/result`, including:
