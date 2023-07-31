@@ -1,6 +1,6 @@
 # Graph-based-NGS-pipeline
 
-*Beta test version*
+*Alpha test version*
 
 ## Summary
 Referring to the paper<sup> [[1]](https://www.nature.com/articles/s41586-023-05896-x)[[2]](https://www.nature.com/articles/s41586-023-06173-7)</sup>  and existing protocol<sup>[[3]](https://github.com/vgteam/vg_wdl)</sup>, we have built a pipeline based on *snakemake* to call/genotype snvs/indels/SVs from multi-sample NGS data in HPC.
@@ -78,7 +78,7 @@ merged.graph.pangenie.vcf.gz
 # merged vgcall vcf.gz for all samples
 merged.graph.vgcall.vcf.gz
 ```
-**Note: the reference in toydata is a partial graph at MHC loci, but it does not mean that the variation sets obtained by running this pipeline on a local graph are correct and accurate**.
+**Note: the reference in toydata is a partial graph at HLA loci, but it does not mean that the variation sets obtained by running this pipeline on a local graph are correct and accurate**.
 
 ## Run on real data
 ### Pangenome graph:
