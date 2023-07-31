@@ -1,0 +1,29 @@
+# For bug test, replace the {download_dir} to the absolute directory where the pipeline was downloaded
+
+## filelist
+## Two columns for sample names and download_dir of fq files, if paired-end sequenced, the download_dir of two fq files are joint with ';' 
+filelist: {download_dir}/toydata/test.filelist
+
+## Working Dir
+work_dir: {download_dir}/toydata/out
+
+## Number of threads for a individual at every single step
+threads: 4
+
+## Absolute directories to graph reference files
+gg_file: {download_dir}/toydata/graph/HLA.gg
+dist_file: {download_dir}/toydata/graph/HLA.dist
+gbwt_file: {download_dir}/toydata/graph/HLA.gbwt
+min_file: {download_dir}/toydata/graph/HLA.min
+xg_file: {download_dir}/toydata/graph/HLA.xg
+## PanGenie reference vcf
+Graph_preprocessed_vcf: {download_dir}/toydata/graph/HLA.new.vcf
+
+## Linear reference genome
+ref_name: GRCh38
+ref: {download_dir}/toydata/ref.chr6_29700000_30200000.fa
+
+## Absolute directory of executable `run_deepvariant` in DeepVariant
+run_deepvariant: {dir_to_run_deepvariant}
+
+

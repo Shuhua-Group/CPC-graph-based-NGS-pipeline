@@ -1,0 +1,4 @@
+HG00403	/share1/home/tanxinjiang/PanGenome/ShortReads.mapping/pipeline/test/toydata/MHC/fq/HG00403.R1.fastq.gz;/share1/home/tanxinjiang/PanGenome/ShortReads.mapping/pipeline/test/toydata/MHC/fq/HG00403.R2.fastq.gz
+NA06984	/share1/home/tanxinjiang/PanGenome/ShortReads.mapping/pipeline/test/toydata/MHC/fq/NA06984.R1.fastq.gz;/share1/home/tanxinjiang/PanGenome/ShortReads.mapping/pipeline/test/toydata/MHC/fq/NA06984.R2.fastq.gz
+NA18486	/share1/home/tanxinjiang/PanGenome/ShortReads.mapping/pipeline/test/toydata/MHC/fq/NA18486.R1.fastq.gz;/share1/home/tanxinjiang/PanGenome/ShortReads.mapping/pipeline/test/toydata/MHC/fq/NA18486.R2.fastq.gz
+NA18525	/share1/home/tanxinjiang/PanGenome/ShortReads.mapping/pipeline/test/toydata/MHC/fq/NA18525.R1.fastq.gz;/share1/home/tanxinjiang/PanGenome/ShortReads.mapping/pipeline/test/toydata/MHC/fq/NA18525.R2.fastq.gz
