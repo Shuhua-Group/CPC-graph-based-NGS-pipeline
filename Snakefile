@@ -1,11 +1,11 @@
 """
-Author: Lsy & Yzy
+Author: Lsy, Yzy & Txj
 Affiliation: HumPOG, Fudan University
 Date: June 8th 2023
 Aim:  Snakemake workflow for paired-end NGS reads mapping & variant-calling with CPC-graph.
-#Requirements: vg== 1.43, samtools, gatk, freebayes(conda), bedtools, abra2, deepvariant
+#Requirements: vg==1.43, samtools, gatk, freebayes(conda), bedtools, abra2, deepvariant
 Run:  snakemake  -s Snakefile
-Latest modification: July 24th 2023
+Latest modification: August 2nd 2023
 - todo
 """
 
