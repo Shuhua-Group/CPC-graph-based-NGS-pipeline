@@ -30,7 +30,6 @@ from functions.basic import parse_filelist
 from functions.basic import get_chromosomes
 
 
-
 # Process the filelist
 try:
     fq_dict, pair_flag = parse_filelist(filelist)
@@ -41,6 +40,7 @@ samples = fq_dict.keys()
 
 # Get the chromsomes names
 CHROMOSOMES = get_chromosomes(xg_file)
+
 
 
 rule all:
@@ -66,16 +66,17 @@ rule get_chromosomes_size:
     resources: mem_mb=1024*1
     shell:
         """
-        awk '/^>/{{if (name) print name "\\t" len; name=$0; len=0; next}} {{len+=length($0)}} END{{if (name) print name "\\t" len}}' {input} | sed "s/^>//g" > {output.chr_size}
+        awk '/^>/{{FS=" ";if (name) print name "\\t" len; name=$1; len=0; next}} {{len+=length($0)}} END{{FS=" ";if (name) print name "\\t" len}}' {input} | sed "s/^>//g" > {output.chr_size}
         """
 
 
 #Step1: Run vg giraffe for graph reads mapping (~150 CPU hours, 5.5 hours with 36 threads) 
 rule Graph_Mapping:
     input:
-        fq = lambda wildcards: fq_dict[wildcards.sample]
+        fq = lambda wildcards: fq_dict[wildcards.sample],
     output:
         gam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.gam",
+
     log: wd + "/logs/01.graph_mapping.{sample}."+ref_name+".log"
     threads: threads
     resources: mem_mb=1024*50
