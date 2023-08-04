@@ -17,6 +17,7 @@ conda >= 22.9.0 is requeired
 # clone the repo
 git clone https://github.com/Shuhua-Group/CPC-graph-based-NGS-pipeline.git
 # create the conda enviroment
+cd CPC-graph-based-NGS-pipeline
 conda env create -f environment.yaml
 ```
 **[!] There are many bugs while using conda version of DeepVariant, so that we need to [get DeepVariant separately using Docker or Singularity](https://github.com/google/deepvariant).**
@@ -24,7 +25,6 @@ conda env create -f environment.yaml
 ## Quick Start
 We can run the pipeline on the toydata for bug test.
 ```
-cd CPC-graph-based-NGS-pipeline
 conda activate Pan_NGS
 ```
 
