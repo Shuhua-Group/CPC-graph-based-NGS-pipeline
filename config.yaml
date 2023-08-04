@@ -22,6 +22,7 @@ Graph_preprocessed_vcf: {download_dir}/toydata/graph/HLA.new.vcf
 ## Linear reference genome
 ref_name: GRCh38
 ref: {download_dir}/toydata/ref.chr6_29700000_30200000.fa
+ref_dict: {download_dir}/toydata/ref.chr6_29700000_30200000.dict
 
 ## Absolute directory of executable `run_deepvariant` in DeepVariant
 run_deepvariant: {dir_to_run_deepvariant}

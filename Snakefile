@@ -13,6 +13,7 @@ configfile: "config.yaml"
 filelist = config['filelist']
 wd = config['work_dir']
 ref = config['ref']
+ref_dict = config['ref_dict']
 ref_name = config['ref_name']
 gg_file = config['gg_file']
 dist_file = config['dist_file']
@@ -95,17 +96,18 @@ rule Graph_Mapping:
 rule Surject_to_bam:
     input:
         gam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.gam"
+        ref_dict = ref_dict
     output:
         bam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.bam",
         bam_sort = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.sorted.bam",
         bam_sort_bai = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.sorted.bam.bai",
     log: wd + "/logs/02.surject_to_bam.{sample}."+ref_name+".log"
     threads: threads
-    resources: mem_mb=1024*10
+    resources: mem_mb=1024*100
     shell:
         """
         (vg surject --prune-low-cplx -x {xg_file} --interleaved --max-frag-len 3000 -t {threads} -b {input.gam} > {output.bam}) >{log} 2>&1
-        samtools sort -@ {threads} {output.bam} -o {output.bam_sort}
+        samtools reheader {ref_dict} {output.bam} | samtools sort -@ {threads} -o {output.bam_sort}
         samtools index -@ {threads} {output.bam_sort}
         """
 
