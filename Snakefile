@@ -5,8 +5,7 @@ Date: June 8th 2023
 Aim:  Snakemake workflow for paired-end NGS reads mapping & variant-calling with CPC-graph.
 #Requirements: vg==1.43, samtools, gatk, freebayes(conda), bedtools, abra2, deepvariant
 Run:  snakemake  -s Snakefile
-Latest modification: August 2nd 2023
-- todo
+Latest modification: August 4th 2023
 """
 
 # Load configuration from config.yaml
@@ -105,10 +104,9 @@ rule Surject_to_bam:
     resources: mem_mb=1024*10
     shell:
         """
-        # (vg surject --prune-low-cplx {input.gam} > {output.bam}) >{log} 2>&1
-        (vg surject --prune-low-cplx -x {xg_file} -b {input.gam} > {output.bam}) >{log} 2>&1
+        (vg surject --prune-low-cplx -x {xg_file} --interleaved --max-frag-len 3000 -t {threads} -b {input.gam} > {output.bam}) >{log} 2>&1
         samtools sort -@ {threads} {output.bam} -o {output.bam_sort}
-        samtools index {output.bam_sort}
+        samtools index -@ {threads} {output.bam_sort}
         """
 
 
