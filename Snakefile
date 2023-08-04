@@ -95,7 +95,7 @@ rule Graph_Mapping:
 #Step2: Surject onto chromosomal paths
 rule Surject_to_bam:
     input:
-        gam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.gam"
+        gam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.gam",
         ref_dict = ref_dict
     output:
         bam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.bam",
@@ -124,7 +124,7 @@ rule Bam_preprocess:
         intervals_bed = wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.IndelRealigner.intervals.bed",
         ex_bed = wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.IndelRealigner.ex.bed"
     log: wd + "/logs/03.bam_processing.{sample}.{chr}."+ref_name+".preprocess.log"
-    threads: 4
+    threads: 16
     resources: mem_mb=1024*5
     params:
         chr = lambda wildcards: wildcards.chr
