@@ -29,7 +29,7 @@ conda activate Pan_NGS
 ```
 
 ### (1). Modify the configfiles
-At the root directory of the pipeline, here is `config.yaml` and `toydata/test.filelist`
+At the root directory of the pipeline, here is `config.yaml` and `toydata/test.filelist`  
 Replace `{download_dir}` to the absolute directory where the pipeline was downloaded:  
 `config.yaml`:
 ```
@@ -39,7 +39,7 @@ filelist: {download_dir}/toydata/test.filelist
 
 ## Working Dir
 work_dir: {download_dir}/toydata/out
-## Number of threads for a individual at every single step
+## Number of threads for every single step
 threads: 4
 ## Absolute directories to graph reference files
 gg_file: {download_dir}/toydata/graph/MHC.gg
