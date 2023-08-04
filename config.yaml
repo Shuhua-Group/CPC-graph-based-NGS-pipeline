@@ -7,7 +7,7 @@ filelist: {download_dir}/toydata/test.filelist
 ## Working Dir
 work_dir: {download_dir}/toydata/out
 
-## Number of threads for a individual at every single step
+## Number of threads for every single step
 threads: 4
 
 ## Absolute directories to graph reference files
