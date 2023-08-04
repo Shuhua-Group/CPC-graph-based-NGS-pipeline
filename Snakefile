@@ -107,7 +107,7 @@ rule Surject_to_bam:
     shell:
         """
         (vg surject --prune-low-cplx -x {xg_file} --interleaved --max-frag-len 3000 -t {threads} -b {input.gam} > {output.bam}) >{log} 2>&1
-        samtools reheader {ref_dict} {output.bam} | samtools sort -@ {threads} -o {output.bam_sort}
+        samtools reheader {input.ref_dict} {output.bam} | samtools sort -@ {threads} -o {output.bam_sort}
         samtools index -@ {threads} {output.bam_sort}
         """
 
