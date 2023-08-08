@@ -75,7 +75,7 @@ For example:
 snakemake --cluster "sbatch -N 1 --ntasks=1 \
     --cpus-per-task={threads} --mem={resources.mem_mb} \
     --job-name={rule} --output={rule}.%j.out --error={rule}.%j.err" \
-    --jobs 128 --retries 3
+    --jobs 128 --retries 3 --latency-wait 30
 ```
 See more details at [snakemake doc](https://snakemake.readthedocs.io/en/stable/executing/cluster.html).
 
