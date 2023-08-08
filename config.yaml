@@ -17,7 +17,7 @@ gbwt_file: {download_dir}/toydata/graph/HLA.gbwt
 min_file: {download_dir}/toydata/graph/HLA.min
 xg_file: {download_dir}/toydata/graph/HLA.xg
 ## PanGenie reference vcf
-Graph_preprocessed_vcf: {download_dir}/toydata/graph/HLA.new.vcf
+Graph_preprocessed_vcf: {download_dir}/toydata/graph/HLA.vcf
 
 ## Linear reference genome
 ref_name: GRCh38
