@@ -76,7 +76,7 @@ rule Graph_Mapping:
         fq = lambda wildcards: fq_dict[wildcards.sample],
     output:
         gam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.gam",
-
+        gam_stat = wd + "/result/{sample}/{sample}."+ref_name+".giraffe.gam_stat.txt"
     log: wd + "/logs/01.graph_mapping.{sample}."+ref_name+".log"
     threads: threads
     resources: mem_mb=1024*50
@@ -86,7 +86,7 @@ rule Graph_Mapping:
         fq_cmd = " -f ".join(input.fq)
         shell(cmd_template + fq_cmd + ' > {output.gam}) > {log} 2>&1')
         # vg stat
-        cmd = "vg stats -a {output.gam} >> {log}"
+        cmd = "vg stats -a {output.gam} >> {output.gam_stat}"
         shell(cmd)
 
 # ruleorder: Graph_Mapping > Surject_to_bam
@@ -103,7 +103,7 @@ rule Surject_to_bam:
         bam_sort_bai = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.sorted.bam.bai",
     log: wd + "/logs/02.surject_to_bam.{sample}."+ref_name+".log"
     threads: threads
-    resources: mem_mb=1024*100
+    resources: mem_mb=1024*50
     shell:
         """
         (vg surject --prune-low-cplx -x {xg_file} --interleaved --max-frag-len 3000 -t {threads} -b {input.gam} > {output.bam}) >{log} 2>&1
@@ -124,7 +124,7 @@ rule Bam_preprocess:
         intervals_bed = wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.IndelRealigner.intervals.bed",
         ex_bed = wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.IndelRealigner.ex.bed"
     log: wd + "/logs/03.bam_processing.{sample}.{chr}."+ref_name+".preprocess.log"
-    threads: 16
+    threads: 8
     resources: mem_mb=1024*5
     params:
         chr = lambda wildcards: wildcards.chr
@@ -152,7 +152,7 @@ rule Realignment:
     output:
         bam_realign = wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.giraffe.sorted.lefted.realigned.bam",
     log: wd + "/logs/03.bam_processing.{sample}.{chr}."+ref_name+".realignment.log"
-    threads: threads    
+    threads: 8   
     resources: mem_mb=1024*10
     params:
         chr = lambda wildcards: wildcards.chr
@@ -168,7 +168,7 @@ rule Realignment:
 #Step3.5: Merge
 rule Bam_Merge:
     input:
-        expand(wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.giraffe.sorted.lefted.realigned.bam",sample = samples,chr = CHROMOSOMES),
+        expand(wd + "/temp/{sample}/{sample}."+ref_name+".chr_split/{chr}.giraffe.sorted.lefted.realigned.bam",chr = CHROMOSOMES,allow_missing=True),
     output:
         bam = wd + "/temp/{sample}/{sample}."+ref_name+".giraffe.sorted.lefted.realigned.bam"
     threads: threads
@@ -207,7 +207,6 @@ rule vg_call:
         (/usr/bin/time -v vg pack -t {threads} -x {xg_file} -g {input.gam} -Q 5 -s 5 -o {wd}/temp/{wildcards.sample}.{ref_name}.pack) >{log} 2>&1
         (/usr/bin/time -v vg call -t {threads} {xg_file} -k {wd}/temp/{wildcards.sample}.{ref_name}.pack -s {wildcards.sample} | bgzip -@ {threads} > {output.vcf}) >>{log} 2>&1
         tabix {output.vcf}
-        
         """
 
 ruleorder: Graph_Mapping > vg_call
