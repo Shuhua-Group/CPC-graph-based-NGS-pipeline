@@ -5,10 +5,12 @@
 ## Summary
 Referring to the paper<sup> [[1]](https://www.nature.com/articles/s41586-023-05896-x)[[2]](https://www.nature.com/articles/s41586-023-06173-7)</sup>  and existing protocol<sup>[[3]](https://github.com/vgteam/vg_wdl)</sup>, we have built a pipeline based on *snakemake* to call/genotype snvs/indels/SVs from multi-sample NGS data in HPC.  
 
-For alpha test, we have used multiple methods for results comparision:
+![Image text](https://github.com/Shuhua-Group/CPC-graph-based-NGS-pipeline/blob/main/img-storage/PanNGS.pipeline.svg)  
+
+In alpha test, we are now using methods below:
 - (1). *VG giraffe* + *DeepVariants* to call SNPs and indels;
-- (2). *VG giraffe* + *VG call* to call the whole variants set;
-- (3). *PanGenie* to genotype the whole variants set.  
+- (2). *VG giraffe* + *VG call* to call the whole variants sets;
+- (3). *PanGenie* to genotype the whole variants sets.  
   
 Please give credit to the relevant paper if the pipeline was applied to your work.
 ## Installation
