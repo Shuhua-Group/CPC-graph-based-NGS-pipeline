@@ -7,7 +7,7 @@ Referring to the paper<sup> [[1]](https://www.nature.com/articles/s41586-023-058
 
 For alpha test, we have used multiple methods for results comparision:
 - (1). *VG giraffe* + *DeepVariants* to call SNPs and indels;
-- (2). *VG giraffe* + *VG call* to call SNPs and indels;
+- (2). *VG giraffe* + *VG call* to call the whole variants set;
 - (3). *PanGenie* to genotype the whole variants set.  
   
 Please give credit to the relevant paper if the pipeline was applied to your work.
