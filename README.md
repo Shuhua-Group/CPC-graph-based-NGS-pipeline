@@ -121,4 +121,4 @@ NA06984	{abs_dir}/NA06984.R1.fastq.gz;{abs_dir}/NA06984.R2.fastq.gz
 NA18486	{abs_dir}/NA18486.R1.fastq.gz;{abs_dir}/NA18486.R2.fastq.gz
 NA18525	{abs_dir}/NA18525.R1.fastq.gz;{abs_dir}/NA18525.R2.fastq.gz
 ```
-In real-data testing, we used a 36-core server to analyse pair-ends ~50x NGS data from three samples, taking a total of ~20 hours and consuming a peak of ~330 GB of memory.
+In real-data testing, we used a 128-cores server to analyse pair-ends ~50x NGS data from 10 samples, taking a total of ~50 hours and consuming a peak of ~330 GB of memory.
