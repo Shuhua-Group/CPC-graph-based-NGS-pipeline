@@ -31,7 +31,8 @@ conda activate Pan_NGS
 ```
 
 ### (1). Modify the configfiles
-**The current toydata were out of time, don't run it with the current pipeline, use the real fq and PanGenome reference instead**
+**The current toydata were out of time, don't run it with the current pipeline, use the real fq and PanGenome reference instead**  
+
 At the root directory of the pipeline, here is `config.yaml` and `toydata/test.filelist`  
 Replace `{download_dir}` to the absolute directory where the pipeline was downloaded:  
 `config.yaml`:
@@ -103,7 +104,8 @@ To interpret the results, please read documents of [VG](https://github.com/vgtea
 
 ## Run on real data
 ### Pangenome graph:
-**The current CPC graph reference were out of time, don't run it with the current pipeline, use the new HPRC PanGenome reference instead**
+**The current CPC graph reference were out of time, don't run it with the current pipeline, use the new HPRC PanGenome reference instead**  
+
 You can get the whole-genome minigraph-cactus graph from [HPRC](https://github.com/human-pangenomics/hpp_pangenome_resources) and [CPC](https://github.com/Shuhua-Group/Chinese-Pangenome-Consortium-Phase-I/tree/main), and modify the `config.yaml`:
 ```
 ## Absolute directories to graph reference files
