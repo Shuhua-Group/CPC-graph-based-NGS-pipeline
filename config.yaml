@@ -2,29 +2,30 @@
 
 ## filelist
 ## Two columns for sample names and download_dir of fq files, if paired-end sequenced, the download_dir of two fq files are joint with ';' 
-filelist: {download_dir}/toydata/test.filelist
+## one sample per row: ID\t${fq1}\t${fq2}\n
+filelist:${wd}/filelist
 
 ## Working Dir
-work_dir: {download_dir}/toydata/out
+work_dir: ${wd}/out
 
 ## Number of threads for every single step
 threads: 4
 
-## Absolute directories to graph reference files
-gg_file: {download_dir}/toydata/graph/HLA.gg
-dist_file: {download_dir}/toydata/graph/HLA.dist
-gbwt_file: {download_dir}/toydata/graph/HLA.gbwt
-min_file: {download_dir}/toydata/graph/HLA.min
-xg_file: {download_dir}/toydata/graph/HLA.xg
+#Path to graph reference
+graph_prefix: GRCh38.
+dist_file: ${wd}/ref/CPC.Phase1.GRCh38-minaf.0.1.dist
+min_file: ${wd}/ref/CPC.Phase1.GRCh38-minaf.0.1.min
+gbz_file: ${wd}/ref/CPC.Phase1.GRCh38-minaf.0.1.gbz
 ## PanGenie reference vcf
-Graph_preprocessed_vcf: {download_dir}/toydata/graph/HLA.vcf
+Graph_preprocessed_vcf: ${wd}/ref/cactus_filtered_ids.vcf
 
-## Linear reference genome
+#Linear reference genome
 ref_name: GRCh38
-ref: {download_dir}/toydata/ref.chr6_29700000_30200000.fa
-ref_dict: {download_dir}/toydata/ref.chr6_29700000_30200000.dict
+## No ALT contigs
+ref: ${wd}/ref/GRCh38.pure.fa
+ref_dict: ${wd}/ref/GRCh38.pure.dict
+size_file: ${wd}/ref/chromosome_size.txt
 
-## Absolute directory of executable `run_deepvariant` in DeepVariant
-run_deepvariant: {dir_to_run_deepvariant}
-
-
+run_deepvariant: '/share/apps/cluster/singularity-3.10.2/bin/singularity exec /share/apps/singularity/deepvariant-1.5.0.sif  /opt/deepvariant/bin/run_deepvariant'
+run_glnexus: '/usr/bin/time -v /share/apps/cluster/singularity-3.10.2/bin/singularity exec /share/apps/gene/GLnexus-1.4.1/glnexus-1.4.1.sif glnexus_cli'
+run_pangenie: 'PanGenie'
