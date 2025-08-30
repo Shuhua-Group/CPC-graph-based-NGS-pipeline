@@ -104,7 +104,6 @@ To interpret the results, please read documents of [VG](https://github.com/vgtea
 
 ## Run on real data
 ### Pangenome graph:
-**The current CPC graph reference were out of time, don't run it with the current pipeline, use the new HPRC PanGenome reference instead**  
 
 You can get the whole-genome minigraph-cactus graph from [HPRC](https://github.com/human-pangenomics/hpp_pangenome_resources) and [CPC](https://github.com/Shuhua-Group/Chinese-Pangenome-Consortium-Phase-I/tree/main), and modify the `config.yaml`:
 ```
